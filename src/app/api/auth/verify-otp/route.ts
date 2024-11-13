@@ -16,10 +16,16 @@ export async function POST(req: NextRequest) {
         where: { email },
         data: { emailVerified: true, otp: null },
       });
-      return NextResponse.json({ message: "OTP verified" }, { status: 200 });
+      return NextResponse.json(
+        { message: "OTP verified", success: true },
+        { status: 200 }
+      );
     }
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ message: "Invalid OTP" }, { status: 400 });
+    return NextResponse.json(
+      { message: "Invalid OTP", success: false },
+      { status: 400 }
+    );
   }
 }

@@ -29,15 +29,14 @@ const UserEmailForm = () => {
       EmailSchema.parse({ email });
       const result = await signup(email);
       console.log(result);
-      if (result.status === 201)
+      if (result.success)
         router.push(`/auth/otp?email=${encodeURIComponent(email)}`);
+      else if (!result.success) setError(result.message);
     } catch (err) {
       console.log(err);
       if (err instanceof z.ZodError) {
         setError(err.errors[0].message);
-      }
-      console.log(err);
-      setError("Something went wrong!");
+      } else setError("Something went wrong!");
     } finally {
       setIsLoading(false);
     }

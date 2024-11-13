@@ -1,7 +1,7 @@
 import { sendMail } from "@/lib/actions";
 import { prisma } from "@/lib/prisma";
 import { generateOTP } from "@/lib/utils";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { email } = await req.json();
@@ -15,8 +15,8 @@ export async function POST(req: NextRequest) {
   console.log("user =>", user);
 
   if (user) {
-    return NextResponse.json(
-      { message: "User already exists" },
+    return Response.json(
+      { message: "User already exists", success: false },
       { status: 409 }
     );
   }
@@ -33,14 +33,14 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(
-      { message: "User created successfully" },
+    return Response.json(
+      { message: "User created successfully", success: true },
       { status: 201 }
     );
   } catch (error) {
     console.log("error => ", error instanceof Error ? error.message : error);
-    return NextResponse.json(
-      { message: "Something went wrong" },
+    return Response.json(
+      { message: "Something went wrong", success: false },
       { status: 500 }
     );
   }

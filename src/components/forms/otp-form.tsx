@@ -5,7 +5,9 @@ import SubmitButton from "../buttons/submit-button";
 import { z } from "zod";
 import ErrorMsg from "../shared/error";
 import { verifyOtp } from "@/lib/actions";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import AuthHeading from "../shared/auth-heading";
+import AuthFormWrapper from "../wrappers/auth-form-wrapper";
 
 // declare type for the props
 
@@ -21,13 +23,13 @@ const FormSchema = z.object({
 
 const OTPInput = ({ length = 6 }: InputProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const queryEmail = new URLSearchParams(location.search).get("email");
-  const email = queryEmail ?? "";
-  console.log("email => ", queryEmail, email);
+  const queryEmail = searchParams.get("email") ?? "";
+  console.log("email => ", queryEmail);
   // if you're not using Typescript, simply do const inputRef = useRef()
 
   const inputRef = useRef<HTMLInputElement[]>(Array(length).fill(null));
@@ -60,34 +62,27 @@ const OTPInput = ({ length = 6 }: InputProps) => {
     try {
       // Validate email before submission
       const pin = OTP.join("");
-      FormSchema.safeParse({ pin });
-      const result = await verifyOtp(email, parseInt(pin));
-      if (result.status === 200) {
+      FormSchema.parse({ pin });
+      const result = await verifyOtp(queryEmail, parseInt(pin));
+      if (result.success) {
         router.push("/auth/pwd");
-      }
+      } else if (!result.success) setError(result.message);
     } catch (err) {
+      console.log(err);
       if (err instanceof z.ZodError) {
         setError(err.errors[0].message);
-      }
-      setError("Something went wrong. Please try again later.");
+      } else setError("Something went wrong. Please try again later.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col gap-[32px] flex-1 rounded-[16px]">
-      <div className="flex flex-col gap-[8px]">
-        <p className="text-h2 text-second-foreground font-[500]">
-          Welcome to Reroute
-        </p>
-        <p className="text-h4 text-third-foreground">
-          Please Verify Your Email
-        </p>
-      </div>
+    <AuthFormWrapper>
+      <AuthHeading header="Welcome to Reroute" sub="Please Verify Your Email" />
       <div className="flex flex-col gap-[8px]">
         <p className="text-m">Verification code</p>
-        <div className="flex gap-[8px]">
+        <div className="flex justify-between gap-[8px]">
           {Array.from({ length }, (_, index) => (
             <input
               key={index}
@@ -98,7 +93,7 @@ const OTPInput = ({ length = 6 }: InputProps) => {
               ref={(ref) => {
                 if (ref) inputRef.current[index] = ref;
               }}
-              className="w-[64px] h-[48px] text-center border-[1px] border-first-stroke rounded-[8px]"
+              className="h-[48px] w-full text-center border-[1px] border-first-stroke rounded-[8px]"
             />
           ))}
         </div>
@@ -107,13 +102,13 @@ const OTPInput = ({ length = 6 }: InputProps) => {
       <div className="text-right">
         <SubmitButton
           type="button"
-          disabled={false}
+          disabled={OTP.join("").length !== 6}
           isLoading={isLoading}
           className="w-[240px]"
           onClick={handleSubmit}
         />
       </div>
-    </div>
+    </AuthFormWrapper>
   );
 };
 
