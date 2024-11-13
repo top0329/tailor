@@ -1,12 +1,13 @@
 "use client";
 
 import { signup } from "@/lib/actions";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import GoogleButton from "../buttons/google-button";
+import SubmitButton from "../buttons/submit-button";
+import ErrorMsg from "../shared/error";
 
 const emailSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -50,19 +51,10 @@ const UserEmailForm = () => {
             placeholder="Email"
             className="px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px]"
           />
-          {error && <span className="text-red-500 text-sm">{error}</span>}
+          <ErrorMsg error={error} />
         </div>
         <div className="flex flex-col gap-[12px]">
-          <button
-            type="submit"
-            disabled={isLoading || !email}
-            className={cn(
-              "px-[16px] py-[8px] bg-highlight border-[1px] border-solid rounded-[80px] text-invert-foreground font-bold",
-              email ? "" : "opacity-50"
-            )}
-          >
-            {isLoading ? "Loading..." : "Continue"}
-          </button>
+          <SubmitButton disabled={!email || isLoading} isLoading={isLoading} />
           <p className="text-s text-center">
             By continuing, you are agreeing to Reroute&apos;s
             <br />
