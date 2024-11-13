@@ -14,7 +14,7 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, profile }: any) {
       console.log("user: ", user, "\n", "profile:", profile);
-      return "/otpverification";
+      return "/profile/invitation-code";
     },
   },
   secret: process.env.NEXTAUTH_SECRET!,

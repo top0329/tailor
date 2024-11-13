@@ -4,6 +4,8 @@ import React, { useRef, useState } from "react";
 import SubmitButton from "../buttons/submit-button";
 import { z } from "zod";
 import ErrorMsg from "../shared/error";
+import { verifyOtp } from "@/lib/actions";
+import { useRouter } from "next/navigation";
 
 // declare type for the props
 
@@ -18,8 +20,14 @@ const FormSchema = z.object({
 });
 
 const OTPInput = ({ length = 6 }: InputProps) => {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const queryEmail = new URLSearchParams(location.search).get("email");
+  const email = queryEmail ?? "";
+  console.log("email => ", queryEmail, email);
   // if you're not using Typescript, simply do const inputRef = useRef()
 
   const inputRef = useRef<HTMLInputElement[]>(Array(length).fill(null));
@@ -28,6 +36,9 @@ const OTPInput = ({ length = 6 }: InputProps) => {
   const [OTP, setOTP] = useState<string[]>(Array(length).fill(""));
 
   const handleTextChange = (input: string, index: number) => {
+    if (!/^\d*$/.test(input)) {
+      return;
+    }
     const newPin = [...OTP];
     newPin[index] = input;
     setOTP(newPin);
@@ -43,23 +54,17 @@ const OTPInput = ({ length = 6 }: InputProps) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsLoading(true);
 
     try {
-      FormSchema.safeParse({ pin: OTP.join("") });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-    setError("");
-
-    try {
       // Validate email before submission
-      FormSchema.safeParse({ pin: OTP.join("") });
-
-      //To Do Verify OTP funtion
+      const pin = OTP.join("");
+      FormSchema.safeParse({ pin });
+      const result = await verifyOtp(email, parseInt(pin));
+      if (result.status === 200) {
+        router.push("/auth/pwd");
+      }
     } catch (err) {
       if (err instanceof z.ZodError) {
         setError(err.errors[0].message);

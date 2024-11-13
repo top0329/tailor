@@ -1,4 +1,4 @@
-import OTPForm from "@/components/forms/opt-form";
+import OTPForm from "@/components/forms/otp-form";
 import Header from "@/components/shared/header";
 
 const page = () => {

@@ -12,6 +12,8 @@ export async function POST(req: NextRequest) {
     },
   });
 
+  console.log("user =>", user);
+
   if (user) {
     return NextResponse.json(
       { message: "User already exists" },
@@ -36,8 +38,7 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.log("error =>", error);
-
+    console.log("error => ", error instanceof Error ? error.message : error);
     return NextResponse.json(
       { message: "Something went wrong" },
       { status: 500 }

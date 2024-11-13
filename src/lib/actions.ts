@@ -15,15 +15,6 @@ export const signup = async (email: string) => {
     },
   });
 };
-export const login = async (email: string) => {
-  return await fetch(`${BASE_URL}auth/login`, {
-    method: "POST",
-    body: email,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-};
 
 export const sendMail = async (
   email: string,
@@ -35,5 +26,15 @@ export const sendMail = async (
     to: email,
     subject,
     html,
+  });
+};
+
+export const verifyOtp = async (email: string, otp: number) => {
+  return await fetch(`${BASE_URL}auth/verify-otp`, {
+    method: "POST",
+    body: JSON.stringify({ email: email, otp: otp }),
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 };

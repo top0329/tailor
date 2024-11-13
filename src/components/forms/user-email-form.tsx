@@ -2,18 +2,19 @@
 
 import { signup } from "@/lib/actions";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import GoogleButton from "../buttons/google-button";
 import SubmitButton from "../buttons/submit-button";
 import ErrorMsg from "../shared/error";
+import { useRouter } from "next/navigation";
 
-const emailSchema = z.object({
+const EmailSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
 });
 
 const UserEmailForm = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -25,14 +26,18 @@ const UserEmailForm = () => {
 
     try {
       // Validate email before submission
-      emailSchema.parse({ email });
+      EmailSchema.parse({ email });
       const result = await signup(email);
-      if (result.status === 201) redirect("/otpverification");
+      console.log(result);
+      if (result.status === 201)
+        router.push(`/auth/otp?email=${encodeURIComponent(email)}`);
     } catch (err) {
+      console.log(err);
       if (err instanceof z.ZodError) {
         setError(err.errors[0].message);
       }
-      setError("Something went wrong. Please try again later.");
+      console.log(err);
+      setError("Something went wrong!");
     } finally {
       setIsLoading(false);
     }
