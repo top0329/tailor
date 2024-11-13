@@ -31,7 +31,7 @@ export const sendMail = async (
   html: string
 ) => {
   return resend.emails.send({
-    from: "noreply@tailorgrow.edu",
+    from: "onboarding@resend.dev",
     to: email,
     subject,
     html,
