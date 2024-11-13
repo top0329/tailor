@@ -8,7 +8,7 @@ const SubmitButton = ({
   onClick,
 }: {
   type?: "submit" | "button";
-  disabled: boolean;
+  disabled?: boolean;
   isLoading?: boolean;
   className?: string;
   onClick?: () => void;

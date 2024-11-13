@@ -7,7 +7,7 @@ import ErrorMsg from "../shared/error";
 import { verifyOtp } from "@/lib/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import AuthHeading from "../shared/auth-heading";
-import AuthFormWrapper from "../wrappers/auth-form-wrapper";
+import UserFormWrapper from "../wrappers/user-form-wrapper";
 
 // declare type for the props
 
@@ -78,8 +78,8 @@ const OTPInput = ({ length = 6 }: InputProps) => {
   };
 
   return (
-    <AuthFormWrapper>
-      <AuthHeading header="Welcome to Reroute" sub="Please Verify Your Email" />
+    <UserFormWrapper>
+      <AuthHeading header="Welcome to Reroute" sub="Please verify your email" />
       <div className="flex flex-col gap-[8px]">
         <p className="text-m">Verification code</p>
         <div className="flex justify-between gap-[8px]">
@@ -108,7 +108,7 @@ const OTPInput = ({ length = 6 }: InputProps) => {
           onClick={handleSubmit}
         />
       </div>
-    </AuthFormWrapper>
+    </UserFormWrapper>
   );
 };
 
