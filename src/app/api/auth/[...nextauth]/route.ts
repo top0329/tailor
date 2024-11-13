@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
-// import { useRouter } from "next/navigation";
 
 export const authOptions = {
   providers: [
@@ -12,19 +11,12 @@ export const authOptions = {
       },
     }),
   ],
-  // callbacks: {
-  //   async signIn({ user, account, profile, credentials }: unknown) {
-  //     // const router = useRouter();
-  //     console.log(
-  //       "Sign in callback called",
-  //       user,
-  //       account,
-  //       profile,
-  //       credentials
-  //     );
-  //     // if (user) redirect("/otpverification");
-  //   },
-  // },
+  callbacks: {
+    async signIn({ user, profile }: any) {
+      console.log("user: ", user, "\n", "profile:", profile);
+      return "/otpverification";
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET!,
 };
 
