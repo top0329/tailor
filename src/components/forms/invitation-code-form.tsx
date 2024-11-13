@@ -26,7 +26,7 @@ const InvitationCodeForm = () => {
         />
         <div className="flex justify-end items-center gap-[16px]">
           <Link href="/profile/info">
-            <p>Skip, I don't have it</p>
+            <p>Skip, I don&apos;t have it</p>
           </Link>
           <SubmitButton className="w-[240px]" onClick={handleSubmit} />
         </div>
