@@ -1,10 +1,10 @@
 "use server";
 
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
+
+const MAILING_EMAIL = process.env.MAILING_EMAIL;
 
 const BASE_URL = process.env.NEXT_PUBLIC_NEXT_API_URL;
-
-const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
 export const signup = async (email: string) => {
   const res = await fetch(`${BASE_URL}auth/signup`, {
@@ -17,13 +17,25 @@ export const signup = async (email: string) => {
   return await res.json();
 };
 
+const mailConfig = {
+  host: process.env.MAILING_HOST || "",
+  port: parseInt(process.env.MAILING_PORT || ""),
+  secure: process.env.MAILING_SECURE === "true",
+  auth: {
+    user: process.env.MAILING_EMAIL || "",
+    pass: process.env.MAILING_PASSWORD || "",
+  },
+};
+
+const transporter = nodemailer.createTransport(mailConfig);
+
 export const sendMail = async (
   email: string,
   subject: string,
   html: string
 ) => {
-  return resend.emails.send({
-    from: "onboarding@resend.dev",
+  return transporter.sendMail({
+    from: MAILING_EMAIL,
     to: email,
     subject,
     html,
