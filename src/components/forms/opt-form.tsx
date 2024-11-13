@@ -10,7 +10,7 @@ const OPTForm = () => {
   return (
     <div>
       {inputRefs.map((ref, index) => {
-        return <input key={index} type='text' maxLength={1} ref={ref} />;
+        return <input key={index} type="text" maxLength={1} ref={ref} />;
       })}
     </div>
   );

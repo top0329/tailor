@@ -38,23 +38,23 @@ const UserEmailForm = () => {
   };
 
   return (
-    <div className='max-w-[424px] w-full flex flex-col gap-[16px]'>
+    <div className="max-w-[424px] w-full flex flex-col gap-[16px]">
       <GoogleButton isLoading={isLoading} />
-      <p className='text-center'>or</p>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-[32px]'>
-        <div className='flex flex-col gap-[8px]'>
-          <p className='text-m'>Sign up with Email</p>
+      <p className="text-center">or</p>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-[32px]">
+        <div className="flex flex-col gap-[8px]">
+          <p className="text-m">Sign up with Email</p>
           <input
             onChange={(e) => setEmail(e.target.value)}
-            type='text'
-            placeholder='Email'
-            className='px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px]'
+            type="text"
+            placeholder="Email"
+            className="px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px]"
           />
-          {error && <span className='text-red-500 text-sm'>{error}</span>}
+          {error && <span className="text-red-500 text-sm">{error}</span>}
         </div>
-        <div className='flex flex-col gap-[12px]'>
+        <div className="flex flex-col gap-[12px]">
           <button
-            type='submit'
+            type="submit"
             disabled={isLoading || !email}
             className={cn(
               "px-[16px] py-[8px] bg-highlight border-[1px] border-solid rounded-[80px] text-invert-foreground font-bold",
@@ -63,14 +63,14 @@ const UserEmailForm = () => {
           >
             {isLoading ? "Loading..." : "Continue"}
           </button>
-          <p className='text-s text-center'>
+          <p className="text-s text-center">
             By continuing, you are agreeing to Reroute&apos;s
             <br />
-            <Link href='#' className='underline text-highlight-foreground'>
+            <Link href="#" className="underline text-highlight-foreground">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href='#' className='underline text-highlight-foreground'>
+            <Link href="#" className="underline text-highlight-foreground">
               Privacy Policy
             </Link>
           </p>
