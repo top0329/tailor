@@ -1,7 +1,7 @@
 import PreferForm from "@/components/forms/perfer-form";
 import UserMainWrapper from "@/components/wrappers/user-main-wrapper";
 
-const page = () => {
+const Page = () => {
   return (
     <UserMainWrapper>
       <PreferForm />
@@ -9,4 +9,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

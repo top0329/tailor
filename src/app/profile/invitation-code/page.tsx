@@ -2,7 +2,7 @@ import InvitationCodeForm from "@/components/forms/invitation-code-form";
 import UserMainWrapper from "@/components/wrappers/user-main-wrapper";
 import Image from "next/image";
 
-const page = () => {
+const Page = () => {
   return (
     <UserMainWrapper>
       <InvitationCodeForm />
@@ -18,4 +18,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

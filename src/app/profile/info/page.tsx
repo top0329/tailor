@@ -1,7 +1,7 @@
 import InfoForm from "@/components/forms/info-form";
 import UserMainWrapper from "@/components/wrappers/user-main-wrapper";
 
-const page = () => {
+const Page = () => {
   return (
     <UserMainWrapper>
       <InfoForm />
@@ -9,4 +9,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

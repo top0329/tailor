@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const otp = generateOTP();
-    const html = `<p>Your verification code is ${otp}</p>`;
-    await sendMail(email, "Verify your email", html);
+    const html = `<p>Hello,</p><p>Please verify your email address using the code below:</p><br /><strong>${otp}</strong><br /><p>This code will expire in 20 minutes for security reasons. If you did not attempt to log in to TailorGrow, please reset your password and contact our support team.</p><br /><p>If you have any questions, feel free to reach out to our support team.</p><br /><p>Thank you,</p><br /><p>The TailorGrow Team</p>`;
+    await sendMail(email, "TailorGrow Email Verification", html);
 
     await prisma.user.create({
       data: {

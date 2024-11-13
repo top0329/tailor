@@ -2,7 +2,7 @@ import OTPForm from "@/components/forms/otp-form";
 import UserMainWrapper from "@/components/wrappers/user-main-wrapper";
 import Image from "next/image";
 
-const page = () => {
+const Page = () => {
   return (
     <UserMainWrapper>
       <OTPForm />
@@ -18,4 +18,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

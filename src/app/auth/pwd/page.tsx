@@ -2,7 +2,7 @@ import Image from "next/image";
 import PwdForm from "@/components/forms/pwd-form";
 import UserMainWrapper from "@/components/wrappers/user-main-wrapper";
 
-const page = () => {
+const Page = () => {
   return (
     <UserMainWrapper>
       <PwdForm />
@@ -18,4 +18,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
