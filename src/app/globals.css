@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  :root {
+    --placeholder: 212, 7%, 56%;
+    --inactive: 240, 14%, 93%;
+    --purple: 284, 91%, 45%;
+    --pink: 313, 91%, 45%;
+    --first: 0, 0%, 100%;
+    --first-foreground: 210, 29%, 22%;
+    --first-stroke: 240, 8%, 90%;
+    --second: 240, 22%, 96%;
+    --second-foreground: 229, 54%, 25%;
+    --second-stroke: 240, 4%, 79%;
+    --third: 240, 22%, 96%;
+    --third-foreground: 228, 15%, 46%;
+    --third-stroke: 240, 17%, 19%;
+    --disable: 0, 0%, 86%;
+    --disable-foreground: 0, 0%, 67%;
+    --disable-stroke: 240, 6%, 94%;
+    --negative: 7, 100%, 97%;
+    --negative-foreground: 0, 91%, 45%;
+    --negative-stroke: 0, 91%, 45%;
+    --highlight: 222, 56%, 41%;
+    --highlight-foreground: 231, 91%, 45%;
+    --highlight-stroke: 222, 56%, 41%;
+    --invert: 229, 55%, 9%;
+    --invert-foreground: 0, 0%, 100%;
+    --warning: 0, 0%, 100%;
+    --warining-foreground: 43, 100%, 48%;
+    --positive: 135, 40%, 94%;
+    --positive-foreground: 151, 94%, 27%;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-first text-first-foreground;
+  }
+}
