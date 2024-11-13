@@ -19,7 +19,7 @@ const PwdForm = () => {
         header="Welcome to Reroute"
         sub="Please secure your account"
       />
-      <form className="flex flex-col gap-[32px]">
+      <div className="flex flex-col gap-[32px]">
         <div className="flex flex-col gap-[8px]">
           <p className="text-m">Password</p>
           <input
@@ -41,7 +41,7 @@ const PwdForm = () => {
         <div className="text-right">
           <SubmitButton className="w-[240px]" onClick={handleSubmit} />
         </div>
-      </form>
+      </div>
     </UserFormWrapper>
   );
 };

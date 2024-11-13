@@ -5,12 +5,14 @@ const SubmitButton = ({
   disabled,
   isLoading,
   className,
+  text,
   onClick,
 }: {
   type?: "submit" | "button";
   disabled?: boolean;
   isLoading?: boolean;
   className?: string;
+  text?: string;
   onClick?: () => void;
 }) => {
   return (
@@ -24,7 +26,7 @@ const SubmitButton = ({
       )}
       onClick={onClick}
     >
-      {isLoading ? "Loading..." : "Continue"}
+      {isLoading ? "Loading..." : text ?? "Continue"}
     </button>
   );
 };

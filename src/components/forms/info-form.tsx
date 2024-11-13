@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowLeft } from "lucide-react";
 import SubmitButton from "../buttons/submit-button";
 import UserInput from "../inputs/user-input";
@@ -9,7 +11,7 @@ import { useRouter } from "next/navigation";
 const InfoForm = () => {
   const router = useRouter();
   const handleSubmit = () => {
-    router.push("/profile/preferences");
+    router.push("/profile/prefer");
   };
   return (
     <UserFormWrapper>
@@ -17,7 +19,7 @@ const InfoForm = () => {
         header="Let's get to know each other!"
         sub="To build your personal profile"
       />
-      <form className="flex flex-col gap-[32px]">
+      <div className="flex flex-col gap-[32px]">
         <UserInput
           error=""
           label="First Name"
@@ -67,11 +69,16 @@ const InfoForm = () => {
         <div className="flex justify-between items-center">
           <button className="flex items-center gap-[8px] px-[16px] py-[8px]">
             <ArrowLeft size={16} />
-            <p className="text-third-foreground">Back</p>
+            <button
+              className="text-third-foreground"
+              onClick={() => router.back()}
+            >
+              Back
+            </button>
           </button>
           <SubmitButton onClick={handleSubmit} />
         </div>
-      </form>
+      </div>
     </UserFormWrapper>
   );
 };

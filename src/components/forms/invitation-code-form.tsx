@@ -17,7 +17,7 @@ const InvitationCodeForm = () => {
         header="Let's get started"
         sub="Do you have existing plan invitation Code?"
       />
-      <form className="flex flex-col gap-[32px]">
+      <div className="flex flex-col gap-[32px]">
         <UserInput
           error=""
           label="Invitation Code"
@@ -30,7 +30,7 @@ const InvitationCodeForm = () => {
           </Link>
           <SubmitButton className="w-[240px]" onClick={handleSubmit} />
         </div>
-      </form>
+      </div>
     </UserFormWrapper>
   );
 };
