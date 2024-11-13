@@ -4,7 +4,7 @@ import SubmitButton from "@/components/buttons/submit-button";
 import AuthHeading from "@/components/shared/auth-heading";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const handleSubmit = () => {
     router.push("/profile/test/id:1");
@@ -20,4 +20,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
