@@ -10,22 +10,22 @@ const GoogleButton = ({ isLoading }: { isLoading: boolean }) => {
 
   return (
     <button
-      className='px-[24px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[80px]'
+      className="px-[24px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[80px]"
       onClick={() => {
         setIsGoogleLoading(true);
         signIn("google");
       }}
       disabled={isLoading}
     >
-      <div className='flex justify-center items-center gap-[16px]'>
+      <div className="flex justify-center items-center gap-[16px]">
         {isGoogleLoading ? (
-          <Loader2 className='animate-spin' />
+          <Loader2 className="animate-spin" />
         ) : (
           <Image
-            src='/_static/google.png'
+            src="/_static/google.png"
             width={24}
             height={24}
-            alt='GoogleIcon'
+            alt="GoogleIcon"
           />
         )}
         <p>Continuous with Google</p>
