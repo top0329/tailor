@@ -13,6 +13,7 @@ export default {
         inactive: "hsl(var(--inactive))",
         purple: "hsl(var(--purple))",
         pink: "hsl(var(--pink))",
+        extra: "hsl(var(--extra))",
         first: {
           DEFAULT: "hsl(var(--first))",
           foreground: "hsl(var(--first-foreground))",

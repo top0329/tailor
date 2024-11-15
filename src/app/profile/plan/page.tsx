@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Page = () => {
-  const { profile } = useProfileStore();
+  const { profile, clearProfile } = useProfileStore();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,10 @@ const Page = () => {
     try {
       if (profile) {
         const result = await createProfile(profile);
-        if (result.success) router.push("/profile/test/id:1");
+        if (result.success) {
+          clearProfile();
+          router.push("/profile/en-test/id:1");
+        }
       }
     } catch (err) {
       console.log(err);

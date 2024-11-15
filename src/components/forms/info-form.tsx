@@ -13,18 +13,25 @@ import { useProfileStore } from "@/store/useProfileStore";
 const InfoForm = () => {
   const { profile, setProfile } = useProfileStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [gender, setGender] = useState("");
-  const [birth, setBirth] = useState("");
+  const [firstName, setFirstName] = useState(profile?.personalInfo?.firstName);
+  const [lastName, setLastName] = useState(profile?.personalInfo?.lastName);
+  const [gender, setGender] = useState(profile?.personalInfo?.gender);
+  const [birth, setBirth] = useState(profile?.personalInfo?.birth);
   // const [err, setErr] = useState("");
 
+  console.log(profile);
   const router = useRouter();
   const handleSubmit = () => {
     setIsLoading(true);
+
     setProfile({
       ...profile,
-      personalInfo: { firstName, lastName, gender, birth },
+      personalInfo: {
+        firstName: firstName ?? "",
+        lastName: lastName ?? "",
+        gender: gender ?? "",
+        birth: birth ?? "",
+      },
     });
     setIsLoading(false);
     router.push("/profile/interests");
@@ -37,7 +44,7 @@ const InfoForm = () => {
       />
       <div className='flex flex-col gap-[32px]'>
         <UserInput
-          defaultValue={profile?.personalInfo?.firstName}
+          defaultValue={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           error=''
           label='First Name'
@@ -45,7 +52,7 @@ const InfoForm = () => {
           placeholder='Enter your first name'
         />
         <UserInput
-          defaultValue={profile?.personalInfo?.lastName}
+          defaultValue={lastName}
           onChange={(e) => setLastName(e.target.value)}
           error=''
           label='Last Name'
@@ -58,7 +65,7 @@ const InfoForm = () => {
           </label>
           <div className='relative'>
             <select
-              defaultValue={profile?.personalInfo?.gender}
+              defaultValue={gender}
               className='px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px] block appearance-none w-full focus:outline-none focus:bg-white focus:border-gray-500'
               onChange={(e) => setGender(e.target.value)}
               id='grid-state'
@@ -85,7 +92,7 @@ const InfoForm = () => {
             Date Of Birth
           </label>
           <input
-            defaultValue={profile?.personalInfo?.birth}
+            defaultValue={birth}
             onChange={(e) => setBirth(e.target.value)}
             type='date'
             className='px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px]'
@@ -102,7 +109,7 @@ const InfoForm = () => {
           </button>
           <SubmitButton
             onClick={handleSubmit}
-            disabled={!profile?.personalInfo || isLoading}
+            disabled={!firstName || !lastName || !gender || !birth || isLoading}
             isLoading={isLoading}
           />
         </div>
