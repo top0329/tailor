@@ -122,6 +122,7 @@ const InterestsForm = () => {
           <div className='text-third-foreground'>Back</div>
         </button>
         <SubmitButton
+          className='w-[240px]'
           onClick={handleSubmit}
           isLoading={isLoading}
           disabled={!interests.length || isLoading}

@@ -20,7 +20,7 @@ const SubmitButton = ({
       type={!type ? "submit" : type}
       disabled={disabled}
       className={cn(
-        "w-[240px] px-[16px] py-[8px] bg-highlight border-[1px] border-solid rounded-[80px] text-invert-foreground font-bold",
+        "px-[16px] py-[8px] bg-highlight border-[1px] border-solid rounded-[80px] text-invert-foreground font-bold",
         disabled ? "opacity-50" : "",
         className
       )}

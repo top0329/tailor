@@ -108,6 +108,7 @@ const InfoForm = () => {
             <div className='text-third-foreground'>Back</div>
           </button>
           <SubmitButton
+            className='w-[240px]'
             onClick={handleSubmit}
             disabled={!firstName || !lastName || !gender || !birth || isLoading}
             isLoading={isLoading}
