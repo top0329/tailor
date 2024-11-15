@@ -8,7 +8,7 @@ export const getId = async (req: NextRequest) => {
   const decoded = jwt.verify(auth, AUTH_SECRET);
 
   console.log(decoded);
-  const user = (decoded as { user: number }).user;
+  const user = (decoded as { user: string }).user;
 
   return user;
 };

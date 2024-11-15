@@ -3,8 +3,10 @@ CREATE TYPE "Gender" AS ENUM ('male', 'female');
 
 -- CreateTable
 CREATE TABLE "user" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "email" VARCHAR(255) NOT NULL,
+    "password" VARCHAR(255),
+    "registerType" VARCHAR(255),
     "otp" INTEGER,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "invitationCode" VARCHAR(255),
@@ -13,7 +15,6 @@ CREATE TABLE "user" (
     "gender" "Gender",
     "birthDate" TIMESTAMP(3),
     "interests" TEXT[],
-    "password" VARCHAR(255),
     "profileFilled" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),

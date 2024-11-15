@@ -18,8 +18,10 @@ datasource db {
 }
 
 model user {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   email String @unique @db.VarChar(255)
+  password String? @db.VarChar(255)
+  registerType String? @db.VarChar(255)
   otp Int?
   emailVerified Boolean @default(false)
   invitationCode String? @unique @db.VarChar(255)
@@ -28,7 +30,6 @@ model user {
   gender Gender?
   birthDate DateTime?
   interests String[]
-  password String? @db.VarChar(255)
   profileFilled Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
