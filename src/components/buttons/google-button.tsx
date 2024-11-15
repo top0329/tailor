@@ -28,7 +28,7 @@ const GoogleButton = ({ isLoading }: { isLoading: boolean }) => {
             alt="GoogleIcon"
           />
         )}
-        <p>Continuous with Google</p>
+        <p>Continue with Google</p>
       </div>
     </button>
   );

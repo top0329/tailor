@@ -1,54 +1,57 @@
 "use server";
 
 import nodemailer from "nodemailer";
+import { POST } from "./fetch";
+import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
+import { mailConfig } from "@/configs/mail-config";
+import { BASE_URL, MAILING_EMAIL } from "./constants";
+import { Profile } from "@/store/useProfileStore";
 
-const MAILING_EMAIL = process.env.MAILING_EMAIL;
+export const signup = async (email: string) =>
+  await POST("auth/signup", { email });
 
-const BASE_URL = process.env.NEXT_PUBLIC_NEXT_API_URL;
+export const sendPwd = async (pwd: string) => await POST("auth/pwd", { pwd });
 
-export const signup = async (email: string) => {
-  const res = await fetch(`${BASE_URL}auth/signup`, {
+export const createProfile = async (profile: Profile) =>
+  await POST("user/profile", { profile });
+
+export const verifyOtp = async (email: string, otp: number) => {
+  const res = await fetch(`${BASE_URL}auth/verify-otp`, {
     method: "POST",
-    body: JSON.stringify({ email: email }),
+    body: JSON.stringify({ email, otp }),
     headers: {
       "Content-Type": "application/json",
     },
   });
+  setAuthCookie(res);
   return await res.json();
 };
 
-const mailConfig = {
-  host: process.env.MAILING_HOST || "",
-  port: parseInt(process.env.MAILING_PORT || ""),
-  secure: process.env.MAILING_SECURE === "true",
-  auth: {
-    user: process.env.MAILING_EMAIL || "",
-    pass: process.env.MAILING_PASSWORD || "",
-  },
+const setAuthCookie = (response: Response) => {
+  console.log("response", response);
+  console.log("response headers", response.headers);
+  const setCookieHeader = response.headers?.get("Set-Cookie");
+  console.log(setCookieHeader);
+  if (setCookieHeader) {
+    const token = setCookieHeader.split(";")[0].split("=")[1];
+    cookies().set({
+      name: "Authentication",
+      value: token,
+      secure: true,
+      httpOnly: true,
+      expires: new Date(jwtDecode(token).exp! * 1000),
+    });
+  }
 };
 
 const transporter = nodemailer.createTransport(mailConfig);
 
-export const sendMail = async (
-  email: string,
-  subject: string,
-  html: string
-) => {
+export const sendMail = (email: string, subject: string, html: string) => {
   return transporter.sendMail({
     from: MAILING_EMAIL,
     to: email,
     subject,
     html,
   });
-};
-
-export const verifyOtp = async (email: string, otp: number) => {
-  const res = await fetch(`${BASE_URL}auth/verify-otp`, {
-    method: "POST",
-    body: JSON.stringify({ email: email, otp: otp }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return await res.json();
 };

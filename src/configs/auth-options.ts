@@ -1,3 +1,4 @@
+import { AUTH_SECRET } from "@/lib/constants";
 import Google from "next-auth/providers/google";
 
 export const authOptions = {
@@ -16,5 +17,5 @@ export const authOptions = {
       return "/profile/invitation-code";
     },
   },
-  secret: process.env.NEXTAUTH_SECRET!,
+  secret: AUTH_SECRET,
 };

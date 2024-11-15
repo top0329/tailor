@@ -79,32 +79,32 @@ const OTPInput = ({ length = 6 }: InputProps) => {
 
   return (
     <UserFormWrapper>
-      <AuthHeading header="Welcome to Reroute" sub="Please verify your email" />
-      <div className="flex flex-col gap-[8px]">
-        <p className="text-m">Verification code</p>
-        <div className="flex justify-between gap-[8px]">
+      <AuthHeading header='Welcome to Reroute' sub='Please verify your email' />
+      <div className='flex flex-col gap-[8px]'>
+        <p className='text-m'>Verification code</p>
+        <div className='flex justify-between gap-[8px]'>
           {Array.from({ length }, (_, index) => (
             <input
               key={index}
-              type="text"
+              type='text'
               maxLength={1}
               value={OTP[index]}
               onChange={(e) => handleTextChange(e.target.value, index)}
               ref={(ref) => {
                 if (ref) inputRef.current[index] = ref;
               }}
-              className="h-[48px] w-full text-center border-[1px] border-first-stroke rounded-[8px]"
+              className='h-[48px] w-full text-center border-[1px] border-first-stroke rounded-[8px]'
             />
           ))}
         </div>
         <ErrorMsg error={error} />
       </div>
-      <div className="text-right">
+      <div className='text-right'>
         <SubmitButton
-          type="button"
-          disabled={OTP.join("").length !== 6}
+          type='submit'
+          disabled={OTP.join("").length !== 6 || isLoading}
           isLoading={isLoading}
-          className="w-[240px]"
+          className='w-[240px]'
           onClick={handleSubmit}
         />
       </div>

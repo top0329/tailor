@@ -1,5 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
+import ms from "ms";
+
+import { AUTH_SECRET, JWT_EXPIRES } from "@/lib/constants";
 
 export async function POST(req: NextRequest) {
   const { email, otp } = await req.json();
@@ -16,11 +20,37 @@ export async function POST(req: NextRequest) {
         where: { email },
         data: { emailVerified: true, otp: null },
       });
-      return NextResponse.json(
+
+      const tokenPayload = {
+        user: user?.id,
+      };
+
+      const token = jwt.sign(tokenPayload, AUTH_SECRET, {
+        expiresIn: JWT_EXPIRES,
+      });
+
+      const expires = new Date();
+
+      expires.setMilliseconds(expires.getMilliseconds() + ms(JWT_EXPIRES));
+
+      const res = NextResponse.json(
         { message: "OTP verified", success: true },
         { status: 200 }
       );
+
+      res.cookies.set("Authentication", token, {
+        expires,
+        secure: true,
+        httpOnly: true,
+      });
+
+      return res;
     }
+
+    return NextResponse.json(
+      { message: "Can't verify OTP", success: false },
+      { status: 400 }
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json(

@@ -22,11 +22,12 @@ model user {
   email String @unique @db.VarChar(255)
   otp Int?
   emailVerified Boolean @default(false)
+  invitationCode String? @unique @db.VarChar(255)
   firstName String? @db.VarChar(255) @default("")
   lastName String? @db.VarChar(255) @default("")
   gender Gender?
   birthDate DateTime?
-  category String[]
+  interests String[]
   password String? @db.VarChar(255)
   profileFilled Boolean @default(false)
   createdAt DateTime @default(now())
