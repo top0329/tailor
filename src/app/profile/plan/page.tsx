@@ -26,7 +26,7 @@ const Page = () => {
     // } catch (err) {
     //   console.log(err);
     // }
-    router.push("/profile/en-test/id:1");
+    router.push("/en-test/1");
     setIsLoading(false);
   };
   return (
