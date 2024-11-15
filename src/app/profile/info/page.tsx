@@ -2,7 +2,6 @@ import InfoForm from "@/components/forms/info-form";
 import ChatInput from "@/components/inputs/chat-input";
 import Teacher from "@/components/shared/teacher";
 import UserMainWrapper from "@/components/wrappers/user-main-wrapper";
-import { ArrowRightIcon } from "lucide-react";
 
 const Page = () => {
   return (
