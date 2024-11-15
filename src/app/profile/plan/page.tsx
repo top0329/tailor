@@ -3,7 +3,7 @@
 import SubmitButton from "@/components/buttons/submit-button";
 import AuthHeading from "@/components/shared/auth-heading";
 // import { createProfile } from "@/lib/actions";
-import { useProfileStore } from "@/store/useProfileStore";
+// import { useProfileStore } from "@/store/useProfileStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
