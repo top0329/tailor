@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import jwt from "jsonwebtoken";
 
 import { prisma } from "@/app/_helpers/server/prisma";
@@ -13,6 +14,7 @@ import {
 import { cookies } from "next/headers";
 
 const authOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     Google({
       clientId: GOOGLE_CLIENT_ID,
