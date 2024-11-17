@@ -1,11 +1,15 @@
 import Header from "@/app/_components/shared/header";
+import MaxWidthWrapper from "@/app/_components/wrappers/max-width-wrapper";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className='min-h-screen flex flex-col'>
-      <Header />
-      {children}
-    </div>
+    <MaxWidthWrapper>
+      <div className='min-h-screen flex flex-col'>
+        <Header />
+
+        {children}
+      </div>
+    </MaxWidthWrapper>
   );
 };
 

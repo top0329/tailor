@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, RotateCwIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { toast } from "react-toastify";
 
 import UserFormWrapper from "../wrappers/user-form-wrapper";
 import SubmitButton from "../buttons/submit-button";
 import { cn } from "@/utils/cn";
-import { useProfileStore } from "@/store/useProfileStore";
-import ErrorMsg from "../shared/error";
+import { useProfileService } from "@/app/_services";
 import { InterestCategory } from "@prisma/client";
 
 const InterestsForm = () => {
@@ -42,6 +42,7 @@ const InterestsForm = () => {
     "Psychology",
     "Mathematics",
     "Health & Wellness",
+    "Education",
     "Chinese Culture",
     "Science",
     "Western Culture",
@@ -51,21 +52,20 @@ const InterestsForm = () => {
     "English Language",
   ];
 
-  const { profile, setProfile } = useProfileStore();
+  const { interests, personalInfo, setProfile } = useProfileService();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [interests, setInterests] = useState<string[]>(
-    profile?.interests || []
-  );
-  const [err, setErr] = useState("");
+  const [interestsList, setInterests] = useState<string[]>(interests || []);
 
   const handleSubmit = () => {
     setIsLoading(true);
-    setProfile({ ...profile, interests: interests as InterestCategory[] });
-    if (!profile?.interests && !profile?.personalInfo)
-      setErr("Please fill out all the personal information");
+    setProfile({ interests: interestsList as InterestCategory[] });
+    if (!interests && !personalInfo)
+      toast("Please fill out all the personal information");
+    else {
+      router.push("/profile/plan");
+    }
     setIsLoading(false);
-    router.push("/profile/plan");
   };
   return (
     <UserFormWrapper>
@@ -73,21 +73,9 @@ const InterestsForm = () => {
         <p className='text-h2 text-second-foreground font-[500]'>
           Let&apos;s get to know each other!
         </p>
-        <div className='flex justify-between items-center'>
-          <p className='text-h4 text-third-foreground'>
-            To build your personal profile
-          </p>
-          <div className='flex items-center gap-[8px]'>
-            <RotateCwIcon size={16} />
-            <button
-              type='button'
-              className='text-third-foreground'
-              onClick={() => setInterests([])}
-            >
-              Refresh
-            </button>
-          </div>
-        </div>
+        <p className='text-h4 text-third-foreground'>
+          To build your personal profile
+        </p>
       </div>
       <div className='grid grid-cols-2 md:grid-cols-3 gap-[16px] max-h-[500px] overflow-y-scroll scrollbar'>
         {lists.map((list, index) => {
@@ -104,8 +92,8 @@ const InterestsForm = () => {
               }}
               className={cn(
                 "h-[120px] flex items-center justify-center p-[24px] border rounded-[12px]",
-                interests.includes(list)
-                  ? "border-highlight-stroke"
+                interestsList.includes(list)
+                  ? "border-highlight-stroke bg-second"
                   : "border-first-stroke"
               )}
             >
@@ -114,20 +102,21 @@ const InterestsForm = () => {
           );
         })}
       </div>
-      <ErrorMsg error={err} />
       <div className='flex justify-between items-center'>
         <button
+          type='button'
           className='flex items-center gap-[8px] px-[16px] py-[8px]'
-          onClick={() => router.back()}
+          onClick={() => router.push("/profile/info")}
         >
           <ArrowLeft size={16} />
           <div className='text-third-foreground'>Back</div>
         </button>
         <SubmitButton
+          type='button'
           className='w-[240px]'
           onClick={handleSubmit}
           isLoading={isLoading}
-          disabled={!interests.length || isLoading}
+          disabled={!interestsList.length || isLoading}
         />
       </div>
     </UserFormWrapper>

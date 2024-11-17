@@ -81,6 +81,7 @@ const PwdForm = () => {
           <SubmitButton
             className='w-[240px]'
             isLoading={formState.isSubmitting}
+            disabled={formState.isSubmitting}
           />
         </div>
       </div>

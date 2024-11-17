@@ -6,8 +6,8 @@ export { jwtMiddleware };
 
 async function jwtMiddleware(req: NextRequest) {
   if (isPublicPath(req)) return;
-
   const id = auth.verifyToken();
+
   req.headers.set("userId", id);
 }
 

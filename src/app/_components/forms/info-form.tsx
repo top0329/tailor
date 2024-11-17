@@ -1,31 +1,30 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 import { ArrowLeft } from "lucide-react";
 import SubmitButton from "../buttons/submit-button";
 import UserInput from "../inputs/user-input";
 import AuthHeading from "../shared/auth-heading";
 import ErrorMsg from "../shared/error";
 import UserFormWrapper from "../wrappers/user-form-wrapper";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useProfileStore } from "@/store/useProfileStore";
+import { useProfileService } from "@/app/_services";
 
 const InfoForm = () => {
-  const { profile, setProfile } = useProfileStore();
-  const [isLoading, setIsLoading] = useState(false);
-  const [firstName, setFirstName] = useState(profile?.personalInfo?.firstName);
-  const [lastName, setLastName] = useState(profile?.personalInfo?.lastName);
-  const [gender, setGender] = useState(profile?.personalInfo?.gender);
-  const [birth, setBirth] = useState(profile?.personalInfo?.birth);
-  // const [err, setErr] = useState("");
-
-  console.log(profile);
+  const { personalInfo, setProfile } = useProfileService();
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [firstName, setFirstName] = useState(personalInfo?.firstName);
+  const [lastName, setLastName] = useState(personalInfo?.lastName);
+  const [gender, setGender] = useState(personalInfo?.gender);
+  const [birth, setBirth] = useState(personalInfo?.birth);
+
   const handleSubmit = () => {
     setIsLoading(true);
 
     setProfile({
-      ...profile,
       personalInfo: {
         firstName: firstName ?? "",
         lastName: lastName ?? "",
@@ -104,7 +103,7 @@ const InfoForm = () => {
           <button
             type='button'
             className='flex items-center gap-[8px] px-[16px] py-[8px]'
-            onClick={() => router.back()}
+            onClick={() => router.push("/profile/invitation-code")}
           >
             <ArrowLeft size={16} />
             <div className='text-third-foreground'>Back</div>

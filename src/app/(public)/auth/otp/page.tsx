@@ -6,12 +6,12 @@ const Page = () => {
   return (
     <UserMainWrapper>
       <OTPForm />
-      <div className='relative w-full h-full lg:block hidden'>
+      <div className='relative w-full h-full lg:block hidden rounded-[32px]'>
         <Image
           src='/_static/bg1.png'
           alt='bg1'
           fill
-          className='object-center'
+          className='object-center object-cover rounded-[32px]'
         />
       </div>
     </UserMainWrapper>

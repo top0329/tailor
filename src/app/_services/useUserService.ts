@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { useRouter } from "next/navigation";
 
-import { useAlertService } from "./useAlertService";
 import { useFetch } from "../_helpers/client/useFetch";
-import { Profile } from "@/store/useProfileStore";
+import { Profile } from "./useProfileService";
+import { toast } from "react-toastify";
 
 export { useUserService };
 
@@ -14,7 +14,6 @@ const initialState = {
 const userStore = create<IUserStore>(() => initialState);
 
 function useUserService(): IUserService {
-  const alertService = useAlertService();
   const fetch = useFetch();
   const router = useRouter();
   const { user, currentUser } = userStore();
@@ -22,21 +21,18 @@ function useUserService(): IUserService {
   return {
     user,
     currentUser,
-    register: async (email: string, registerType: string) => {
+    register: async ({ email }: { email: string }) => {
       try {
-        await fetch.post("/api/auth/register", { email, registerType });
-        alertService.success("Registration successful!", true);
+        await fetch.post("/api/auth/register", { email });
+        toast.success("Email registration successful!");
 
-        if (registerType === "google") {
-          router.push("/profile/invitation-code");
-          return;
-        }
-        router.push("/auth/otp?email=" + encodeURIComponent(email));
+        router.push(`/auth/otp?email=${encodeURIComponent(email)}`);
       } catch (error: any) {
-        alertService.error(error);
+        toast.error(error);
       }
     },
     verifyOTP: async (otp: string, email: string) => {
+      console.log("otp and email => ", otp, email);
       const OTP = parseInt(otp);
       try {
         const currentUser = await fetch.post("/api/auth/verify-otp", {
@@ -45,28 +41,28 @@ function useUserService(): IUserService {
         });
         userStore.setState({ ...initialState, currentUser });
 
-        alertService.success("OTP verified successfully!", true);
+        toast.success("OTP verified successfully!");
         router.push("/auth/pwd");
       } catch (error: any) {
-        alertService.error(error);
+        toast.error(error);
       }
     },
     createPwd: async (pwd: string) => {
       try {
         await fetch.post("/api/auth/pwd", { pwd });
-        alertService.success("Password created successfully!", true);
+        toast.success("Password created successfully!");
         router.push("/profile/invitation-code");
       } catch (error: any) {
-        alertService.error(error);
+        toast.error(error);
       }
     },
     createProfile: async (profile: Profile) => {
       try {
         await fetch.post("/api/auth/profile", { profile });
-        alertService.success("Onboarding finished successfully!");
-        router.push("/en-test/");
+        toast.success("Onboarding finished successfully!");
+        router.push("/en-test/1");
       } catch (error: any) {
-        alertService.error(error);
+        toast.error(error);
       }
     },
   };
@@ -86,7 +82,7 @@ interface IUserStore {
 }
 
 interface IUserService extends IUserStore {
-  register: (email: string, registerType: string) => Promise<void>;
+  register: ({ email }: { email: string }) => Promise<void>;
   verifyOTP: (otp: string, email: string) => Promise<void>;
   createPwd: (pwd: string) => Promise<void>;
   createProfile: (profile: Profile) => Promise<void>;

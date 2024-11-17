@@ -12,6 +12,7 @@ async function validateMiddleware(req: Request, schema: Joi.ObjectSchema) {
   };
 
   const body = await req.json();
+
   const { error, value } = schema.validate(body, options);
 
   if (error) {

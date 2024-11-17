@@ -16,14 +16,15 @@ type InputProps = {
 const OTPInput = ({ length = 6 }: InputProps) => {
   const userService = useUserService();
   const searchParams = useSearchParams();
+  const email = searchParams.get("email")!;
+  // const queryEmail = email ? decodeURIComponent(email) : "";
 
   const { handleSubmit, formState } = useForm();
 
   const [OTP, setOTP] = useState<string[]>(Array(length).fill(""));
   const inputRef = useRef<HTMLInputElement[]>(Array(length).fill(null));
 
-  const queryEmail = searchParams.get("email") ?? "";
-  console.log("email => ", queryEmail);
+  console.log("email => ", email);
 
   const handleTextChange = (input: string, index: number) => {
     if (!/^\d*$/.test(input)) {
@@ -46,7 +47,7 @@ const OTPInput = ({ length = 6 }: InputProps) => {
 
   async function onSubmit() {
     const otp = OTP.join("");
-    const res = await userService.verifyOTP(otp, queryEmail);
+    const res = await userService.verifyOTP(otp, email);
     console.log("res => ", res);
   }
 

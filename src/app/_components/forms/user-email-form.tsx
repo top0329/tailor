@@ -30,7 +30,7 @@ function UserEmailForm() {
   };
 
   async function onSubmit(user: any) {
-    await userService.register(user, "email");
+    await userService.register(user);
   }
 
   return (
