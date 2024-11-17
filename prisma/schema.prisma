@@ -4,10 +4,6 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-enum Gender {
-  male
-  female
-}
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,20 +13,79 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id String @id @default(uuid())
   email String @unique @db.VarChar(255)
   password String? @db.VarChar(255)
-  registerType String? @db.VarChar(255)
+  registerType RegisterType[]
   otp Int?
-  emailVerified Boolean @default(false)
-  invitationCode String? @unique @db.VarChar(255)
-  firstName String? @db.VarChar(255) @default("")
-  lastName String? @db.VarChar(255) @default("")
-  gender Gender?
-  birthDate DateTime?
-  interests String[]
-  profileFilled Boolean @default(false)
+  emailVerified Boolean? @default(false)
+  profile UserProfile?
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
 }
+model UserProfile {
+  id String @id @default(uuid())
+  invitationCode String? @unique @db.VarChar(255)
+  firstName String @db.VarChar(255) @default("")
+  lastName String @db.VarChar(255) @default("")
+  gender Gender
+  birthDate DateTime
+  interests InterestCategory[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum Gender {
+  male
+  female
+  notanswer
+}
+
+enum RegisterType {
+  email
+  google
+}
+
+enum InterestCategory {
+  TECHNOLOGY
+  MUSIC
+  POLITICS
+  ART
+  MOVIES_TV
+  ARCHITECTURE
+  FANTASY
+  GAMING
+  PHILOSOPHY
+  ANIMALS
+  FASHION
+  BIOLOGY
+  COOKING
+  PHOTOGRAPHY
+  GARDENING
+  SPORTS
+  LITERATURE
+  CHEMISTRY
+  WORLD_HISTORY
+  ENVIRONMENT
+  PHYSICS
+  FOOD
+  HANDICRAFT
+  ENGINEERING
+  TRAVEL
+  PSYCHOLOGY
+  MATHEMATICS
+  HEALTH_WELLNESS
+  EDUCATION
+  CHINESE_CULTURE
+  SCIENCE
+  WESTERN_CULTURE
+  CHINESE_LANGUAGE
+  CHINESE_HISTORY
+  ASTRONOMY
+  ENGLISH_LANGUAGE
+}
+

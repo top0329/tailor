@@ -1,13 +1,18 @@
-import { AUTH_SECRET } from "@/lib/constants";
-import { prisma } from "@/lib/prisma";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+
+import { prisma } from "@/app/_helpers/server/prisma";
+import {
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  NEXTAUTH_SECRET,
+} from "@/constants/env";
 
 const authOptions = {
   providers: [
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
       httpOptions: {
         timeout: 10000,
       },
@@ -23,13 +28,13 @@ const authOptions = {
 
       if (!auth)
         await prisma.user.create({
-          data: { email, registerType: "google", emailVerified: true },
+          data: { email, registerType: ["google"], emailVerified: true },
         });
 
       return "/profile/invitation-code";
     },
   },
-  secret: AUTH_SECRET,
+  secret: NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

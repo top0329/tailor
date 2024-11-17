@@ -44,4 +44,24 @@ body {
   body {
     @apply bg-first text-first-foreground;
   }
+
+  .scrollbar {
+    @apply pr-2;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    @apply w-[5px] h-[5px] ml-2;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    @apply rounded-full mx-2;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-[#948686] rounded-full border-[3px] border-[#343434];
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply cursor-pointer;
+  }
 }

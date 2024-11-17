@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { InterestCategory } from "@prisma/client";
 interface PersonalInfo {
   firstName: string;
   lastName: string;
@@ -9,9 +10,9 @@ interface PersonalInfo {
 }
 
 export interface Profile {
-  invitation?: string;
+  invitationCode?: string;
   personalInfo?: PersonalInfo;
-  interests?: string[];
+  interests?: InterestCategory[];
 }
 
 interface ProfileStore {

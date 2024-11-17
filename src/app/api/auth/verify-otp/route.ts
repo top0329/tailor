@@ -1,61 +1,24 @@
-import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
-import ms from "ms";
+import { cookies } from "next/headers";
+import Joi from "joi";
 
-import { AUTH_SECRET, JWT_EXPIRES } from "@/lib/constants";
+import { usersRepo } from "@/app/_helpers/server";
+import { apiHandler } from "@/app/_helpers/server/api";
 
-export async function POST(req: NextRequest) {
-  const { email, otp } = await req.json();
+module.exports = apiHandler({
+  POST: verifyOTP,
+});
 
-  try {
-    const user = await prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
+async function verifyOTP(req: Request) {
+  const body = await req.json();
 
-    if (user?.otp === otp) {
-      await prisma.user.update({
-        where: { email },
-        data: { emailVerified: true, otp: null },
-      });
+  const { user, token } = await usersRepo.verifyOTP(body);
 
-      const tokenPayload = {
-        user: user?.id,
-      };
+  cookies().set("authorization", token, { httpOnly: true });
 
-      const token = jwt.sign(tokenPayload, AUTH_SECRET, {
-        expiresIn: JWT_EXPIRES,
-      });
-
-      const expires = new Date();
-
-      expires.setMilliseconds(expires.getMilliseconds() + ms(JWT_EXPIRES));
-
-      const res = NextResponse.json(
-        { message: "OTP verified", success: true },
-        { status: 200 }
-      );
-
-      res.cookies.set("Authentication", token, {
-        expires,
-        secure: true,
-        httpOnly: true,
-      });
-
-      return res;
-    }
-
-    return NextResponse.json(
-      { message: "Can't verify OTP", success: false },
-      { status: 400 }
-    );
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json(
-      { message: "Invalid OTP", success: false },
-      { status: 400 }
-    );
-  }
+  return user;
 }
+
+verifyOTP.schema = Joi.object({
+  otp: Joi.number().required(),
+  email: Joi.string().email().required(),
+});

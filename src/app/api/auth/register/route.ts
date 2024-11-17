@@ -4,14 +4,14 @@ import { usersRepo } from "@/app/_helpers/server";
 import { apiHandler } from "@/app/_helpers/server/api";
 
 module.exports = apiHandler({
-  POST: createPwd,
+  POST: register,
 });
 
-async function createPwd(req: Request) {
+async function register(req: Request) {
   const body = await req.json();
-  await usersRepo.createPwd(body);
+  await usersRepo.create(body);
 }
 
-createPwd.schema = Joi.object({
-  pwd: Joi.string().required(),
+register.schema = Joi.object({
+  email: Joi.string().email().required(),
 });
