@@ -1,43 +1,23 @@
 import { create } from "zustand";
-// import { persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 import { InterestCategory } from "@prisma/client";
 
-export { useProfileService };
+export { useProfileStore };
 
-const initialState = {
-  invitationCode: undefined,
-  personalInfo: undefined,
-  interests: undefined,
-};
-
-const userStore = create<ProfileService>((set) => ({
-  ...initialState,
-  profile: null,
-  setProfile: (profile: Partial<Profile>) =>
-    set((state) => ({ ...state, ...profile })),
-  clearProfile: () => set(() => ({ ...initialState })),
-}));
-
-function useProfileService(): ProfileService {
-  const {
-    invitationCode,
-    personalInfo,
-    interests,
-    profile,
-    setProfile,
-    clearProfile,
-  } = userStore();
-
-  return {
-    invitationCode,
-    personalInfo,
-    interests,
-    profile,
-    setProfile,
-    clearProfile,
-  };
-}
+const useProfileStore = create<ProfileService>()(
+  persist(
+    (set) => ({
+      profile: null,
+      setProfile: (profile: Partial<Profile>) =>
+        set((state) => ({ profile: { ...state.profile, ...profile } })),
+      clearProfile: () => set({ profile: null }),
+    }),
+    {
+      name: "profile-storage",
+    }
+  )
+);
 
 interface PersonalInfo {
   firstName: string;
@@ -52,7 +32,7 @@ export interface Profile {
   interests?: InterestCategory[];
 }
 
-interface ProfileService extends Profile {
+interface ProfileService {
   profile: Profile | null;
   setProfile: (profile: Profile) => void;
   clearProfile: () => void;

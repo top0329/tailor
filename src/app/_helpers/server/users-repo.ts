@@ -6,7 +6,7 @@ import { prisma } from "./prisma";
 import { generateOTP, hashPassword } from "@/utils/password";
 import { JWT_EXPIRES, JWT_SECRET } from "@/constants/env";
 import { Profile } from "@/app/_services";
-import { Gender } from "@prisma/client";
+import { Gender, InterestCategory } from "@prisma/client";
 
 export const usersRepo = {
   create,
@@ -85,8 +85,17 @@ async function createPwd({ pwd }: { pwd: string }) {
   }
 }
 async function createProfile({ profile }: { profile: Profile }) {
+  console.log("profile => ", profile);
   const { invitationCode, personalInfo, interests } = profile;
   const { firstName, lastName, gender, birth } = personalInfo!;
+
+  const mappedInterests = interests?.map((interest) => {
+    // Remove spaces and special characters to match enum format
+    return interest
+      .replace(/\s+&\s+/g, "_")
+      .replace(/\s+/g, "")
+      .toUpperCase() as InterestCategory;
+  });
 
   try {
     const currentUserId = headers().get("userId");
@@ -97,8 +106,8 @@ async function createProfile({ profile }: { profile: Profile }) {
         firstName,
         lastName,
         gender: gender as Gender,
-        birthDate: birth,
-        interests: interests,
+        birthDate: new Date(birth),
+        interests: mappedInterests,
         user: {
           connect: {
             id: currentUserId!,

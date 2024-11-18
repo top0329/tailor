@@ -3,18 +3,17 @@
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
-import { useProfileService } from "@/app/_services";
+import { useProfileStore } from "@/app/_services";
 import SubmitButton from "../buttons/submit-button";
 import UserInput from "../inputs/user-input";
 import AuthHeading from "../shared/auth-heading";
 import UserFormWrapper from "../wrappers/user-form-wrapper";
 
 const InvitationCodeForm = () => {
-  const profileService = useProfileService();
-  const router = useRouter();
-
+  const { profile, setProfile } = useProfileStore();
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCode(e.target.value);
@@ -22,10 +21,10 @@ const InvitationCodeForm = () => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    profileService.setProfile({ invitationCode: code });
+    setProfile({ invitationCode: code });
+    setIsLoading(false);
     router.push("/profile/info");
   };
-
   return (
     <UserFormWrapper>
       <AuthHeading
@@ -35,7 +34,7 @@ const InvitationCodeForm = () => {
       <div className='flex flex-col gap-[32px]'>
         <UserInput
           onChange={(e) => handleChange(e)}
-          defaultValue={profileService.invitationCode}
+          defaultValue={profile?.invitationCode}
           error=''
           label='Invitation Code'
           type='text'
@@ -46,7 +45,7 @@ const InvitationCodeForm = () => {
             type='button'
             onClick={() => {
               setIsLoading(true);
-              profileService.setProfile({ invitationCode: "" });
+              setProfile({ invitationCode: "" });
               router.push("/profile/info");
             }}
           >

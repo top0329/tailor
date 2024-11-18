@@ -3,23 +3,25 @@
 import SubmitButton from "@/app/_components/buttons/submit-button";
 import AuthHeading from "@/app/_components/shared/auth-heading";
 import { useUserService } from "@/app/_services";
-import { useProfileService } from "@/app/_services";
+import { useProfileStore } from "@/app/_services";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Page = () => {
   const userService = useUserService();
-  const { profile, clearProfile } = useProfileService();
   const router = useRouter();
+  const { profile, clearProfile } = useProfileStore();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    console.log("whataio");
-    await userService.createProfile(profile!);
-    clearProfile();
-    router.push("/en-test/1");
+
+    try {
+      await userService.createProfile(profile!);
+      clearProfile();
+      router.push("/en-test/1");
+    } catch {}
     setIsLoading(false);
   };
   return (

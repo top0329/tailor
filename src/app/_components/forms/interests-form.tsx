@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import UserFormWrapper from "../wrappers/user-form-wrapper";
 import SubmitButton from "../buttons/submit-button";
 import { cn } from "@/utils/cn";
-import { useProfileService } from "@/app/_services";
+import { useProfileStore } from "@/app/_services";
 import { InterestCategory } from "@prisma/client";
 
 const InterestsForm = () => {
@@ -52,15 +52,17 @@ const InterestsForm = () => {
     "English Language",
   ];
 
-  const { interests, personalInfo, setProfile } = useProfileService();
+  const { profile, setProfile } = useProfileStore();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [interestsList, setInterests] = useState<string[]>(interests || []);
+  const [interestsList, setInterests] = useState<string[]>(
+    profile?.interests || []
+  );
 
   const handleSubmit = () => {
     setIsLoading(true);
     setProfile({ interests: interestsList as InterestCategory[] });
-    if (!interests && !personalInfo)
+    if (!profile?.interests && !profile?.personalInfo)
       toast("Please fill out all the personal information");
     else {
       router.push("/profile/plan");

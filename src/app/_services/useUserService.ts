@@ -57,6 +57,7 @@ function useUserService(): IUserService {
       }
     },
     createProfile: async (profile: Profile) => {
+      console.log("our profile => ", profile);
       try {
         await fetch.post("/api/auth/profile", { profile });
         toast.success("Onboarding finished successfully!");

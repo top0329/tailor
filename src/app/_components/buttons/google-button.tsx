@@ -18,7 +18,7 @@ const GoogleButton = ({ isLoading }: { isLoading: boolean }) => {
     <button
       className='px-[24px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[80px]'
       onClick={handleGoogleLogin}
-      disabled={isLoading}
+      disabled={isLoading || isGoogleLoading}
     >
       <div className='flex justify-center items-center gap-[16px]'>
         {isGoogleLoading ? (

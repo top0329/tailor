@@ -9,17 +9,17 @@ import UserInput from "../inputs/user-input";
 import AuthHeading from "../shared/auth-heading";
 import ErrorMsg from "../shared/error";
 import UserFormWrapper from "../wrappers/user-form-wrapper";
-import { useProfileService } from "@/app/_services";
+import { useProfileStore } from "@/app/_services";
 
 const InfoForm = () => {
-  const { personalInfo, setProfile } = useProfileService();
+  const { profile, setProfile } = useProfileStore();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [firstName, setFirstName] = useState(personalInfo?.firstName);
-  const [lastName, setLastName] = useState(personalInfo?.lastName);
-  const [gender, setGender] = useState(personalInfo?.gender);
-  const [birth, setBirth] = useState(personalInfo?.birth);
+  const [firstName, setFirstName] = useState(profile?.personalInfo?.firstName);
+  const [lastName, setLastName] = useState(profile?.personalInfo?.lastName);
+  const [gender, setGender] = useState(profile?.personalInfo?.gender);
+  const [birth, setBirth] = useState(profile?.personalInfo?.birth);
 
   const handleSubmit = () => {
     setIsLoading(true);
