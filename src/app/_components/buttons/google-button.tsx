@@ -10,9 +10,8 @@ const GoogleButton = ({ isLoading }: { isLoading: boolean }) => {
 
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
-    console.log("Google before =>>>>>>>>>>>>>>>");
-    const result = await signIn("google");
-    console.log("GOOGLE result => ", result);
+    await signIn("google");
+    setIsGoogleLoading(false);
   };
 
   return (

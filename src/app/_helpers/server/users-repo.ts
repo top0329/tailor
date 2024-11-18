@@ -66,7 +66,7 @@ async function createPwd({ pwd }: { pwd: string }) {
   try {
     const currentUserId = headers().get("userId");
 
-    const currentUser = await prisma.user.findUniqueOrThrow({
+    const currentUser = await prisma.user.findFirstOrThrow({
       where: { id: currentUserId! },
     });
 
