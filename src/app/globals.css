@@ -37,6 +37,7 @@ body {
     --positive: 135, 40%, 94%;
     --positive-foreground: 151, 94%, 27%;
     --extra: 266, 45%, 61%;
+    --radius: 12px;
   }
 }
 
@@ -46,7 +47,7 @@ body {
   }
 
   .scrollbar {
-    @apply pr-2;
+    @apply pr-0;
   }
 
   .scrollbar::-webkit-scrollbar {

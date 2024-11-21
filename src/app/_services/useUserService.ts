@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 import { useFetch } from "../_helpers/client/useFetch";
 import { Profile } from "./useProfileService";
-import { toast } from "react-toastify";
 
 export { useUserService };
 
@@ -68,6 +68,7 @@ function useUserService(): IUserService {
     },
   };
 }
+
 interface IUser {
   id: string;
   email: string;

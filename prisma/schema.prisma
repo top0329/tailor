@@ -24,6 +24,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
 }
+
 model UserProfile {
   id String @id @default(uuid())
   invitationCode String? @unique @db.VarChar(255)
@@ -37,6 +38,34 @@ model UserProfile {
 
   userId String @unique
   user User @relation(fields: [userId], references: [id])
+}
+
+model QuestionData {
+  id              Int     @id @default(autoincrement())
+  competency      String  @db.VarChar(50)
+  no              Int     @db.Integer
+  question        String  @db.VarChar(500)
+  a               String  @db.VarChar(500)
+  b               String  @db.VarChar(500)
+  c               String  @db.VarChar(500)
+  d               String  @db.VarChar(500)
+  best_answer     String  @db.VarChar(500)
+  explanation     String  @db.Text
+  amy             String  @db.VarChar(500)
+  ip              String  @db.VarChar(500)
+  status          Boolean   @default(false)
+  created_at      DateTime  @default(now()) @db.Timestamp()
+
+  articleData     ArticleData @relation(fields: [articleDataId], references: [id])
+  articleDataId   Int     @db.Integer
+}
+
+model ArticleData {
+  id          Int           @id @default(autoincrement())
+  level       Level
+  article     String        @db.Text
+  questions   QuestionData[]
+  created_at  DateTime      @default(now()) @db.Timestamp()
 }
 
 enum Gender {
@@ -89,3 +118,8 @@ enum InterestCategory {
   ENGLISH_LANGUAGE
 }
 
+enum Level {
+  A
+  B
+  C
+}
