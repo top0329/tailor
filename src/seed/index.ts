@@ -4,9 +4,9 @@ import { importExcel } from "./import-xlsx";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Starting seed...");
-  await importExcel("public/_static/data.xlsx", "Article C selections");
-  console.log("Seed completed");
+  console.log("Start importing data from excel...");
+  await importExcel("public/_static/data.xlsx");
+  console.log("Successfully imported data from excel!");
 }
 
 main()

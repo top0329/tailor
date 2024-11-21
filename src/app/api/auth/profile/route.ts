@@ -9,7 +9,6 @@ module.exports = apiHandler({
 
 async function createProfile(req: Request) {
   const body = await req.json();
-  console.log("The request body =>", body);
   await usersRepo.createProfile(body);
 }
 

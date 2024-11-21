@@ -1,4 +1,3 @@
-import Joi from "joi";
 import { apiHandler } from "@/app/_helpers/server/api";
 import { prisma } from "@/app/_helpers/server/prisma";
 
@@ -9,12 +8,20 @@ module.exports = apiHandler({
 async function getQuestionData(req: Request) {
   const url = new URL(req.url);
   const articleId = url.pathname.split("/").pop();
-  console.log(articleId);
+
+  if (!articleId || isNaN(Number(articleId))) {
+    return {
+      status: 400,
+      body: {
+        message: "Missing articleId",
+      },
+    };
+  }
+
   const questionData = await prisma.questionData.findMany({
     where: {
-      articleDataId: Number(articleId),
+      articleId: Number(articleId),
     },
   });
-  console.log(questionData);
   return questionData;
 }

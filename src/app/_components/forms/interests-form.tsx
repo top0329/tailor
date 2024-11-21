@@ -71,19 +71,19 @@ const InterestsForm = () => {
   };
   return (
     <UserFormWrapper>
-      <div className='flex flex-col gap-[8px]'>
-        <p className='text-h2 text-second-foreground font-[500]'>
+      <div className="flex flex-col gap-[8px]">
+        <p className="text-h2 text-second-foreground font-[500]">
           Let&apos;s get to know each other!
         </p>
-        <p className='text-h4 text-third-foreground'>
+        <p className="text-h4 text-third-foreground">
           To build your personal profile
         </p>
       </div>
-      <div className='grid grid-cols-2 md:grid-cols-3 gap-[16px] max-h-[500px] overflow-y-scroll scrollbar'>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-[16px] max-h-[500px] overflow-y-scroll scrollbar">
         {lists.map((list, index) => {
           return (
             <button
-              type='button'
+              type="button"
               key={index}
               onClick={() => {
                 setInterests((prev) =>
@@ -104,18 +104,18 @@ const InterestsForm = () => {
           );
         })}
       </div>
-      <div className='flex justify-between items-center'>
+      <div className="flex justify-between items-center">
         <button
-          type='button'
-          className='flex items-center gap-[8px] px-[16px] py-[8px]'
+          type="button"
+          className="flex items-center gap-[8px] px-[16px] py-[8px]"
           onClick={() => router.push("/profile/info")}
         >
           <ArrowLeft size={16} />
-          <div className='text-third-foreground'>Back</div>
+          <div className="text-third-foreground">Back</div>
         </button>
         <SubmitButton
-          type='button'
-          className='w-[240px]'
+          type="button"
+          className="w-[240px]"
           onClick={handleSubmit}
           isLoading={isLoading}
           disabled={!interestsList.length || isLoading}

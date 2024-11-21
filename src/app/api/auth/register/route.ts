@@ -9,7 +9,6 @@ module.exports = apiHandler({
 
 async function register(req: Request) {
   const body = await req.json();
-  console.log("register body => ", body);
   await usersRepo.create(body);
 }
 

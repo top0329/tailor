@@ -51,19 +51,15 @@ model QuestionData {
   d               String  @db.VarChar(500)
   best_answer     String  @db.VarChar(500)
   explanation     String  @db.Text
-  amy             String  @db.VarChar(500)
-  ip              String  @db.VarChar(500)
-  status          Boolean   @default(false)
-  created_at      DateTime  @default(now()) @db.Timestamp()
 
-  articleData     ArticleData @relation(fields: [articleDataId], references: [id])
-  articleDataId   Int     @db.Integer
+  article     Article @relation(fields: [articleId], references: [id])
+  articleId   Int     @db.Integer
 }
 
-model ArticleData {
+model Article {
   id          Int           @id @default(autoincrement())
-  level       Level
-  article     String        @db.Text
+  section     Section
+  content     String        @db.Text
   questions   QuestionData[]
   created_at  DateTime      @default(now()) @db.Timestamp()
 }
@@ -118,7 +114,7 @@ enum InterestCategory {
   ENGLISH_LANGUAGE
 }
 
-enum Level {
+enum Section {
   A
   B
   C

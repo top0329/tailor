@@ -9,7 +9,9 @@ const useArticleService = create<ArticleService>()(
     (set) => ({
       article: null,
       setArticle: (article: Partial<ArticleType>) =>
-        set((state) => ({ article: { ...state.article, ...article } as ArticleType })),
+        set((state) => ({
+          article: { ...state.article, ...article } as ArticleType,
+        })),
       clearArticle: () => set({ article: null }),
     }),
     {

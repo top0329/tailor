@@ -32,7 +32,6 @@ function useUserService(): IUserService {
       }
     },
     verifyOTP: async (otp: string, email: string) => {
-      console.log("otp and email => ", otp, email);
       const OTP = parseInt(otp);
       try {
         const currentUser = await fetch.post("/api/auth/verify-otp", {
@@ -57,11 +56,10 @@ function useUserService(): IUserService {
       }
     },
     createProfile: async (profile: Profile) => {
-      console.log("our profile => ", profile);
       try {
         await fetch.post("/api/auth/profile", { profile });
         toast.success("Onboarding finished successfully!");
-        router.push("/en-test/1");
+        router.push("/en-test");
       } catch (error: any) {
         toast.error(error);
       }

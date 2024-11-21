@@ -39,78 +39,78 @@ const InfoForm = () => {
     <UserFormWrapper>
       <AuthHeading
         header="Let's get to know each other!"
-        sub='To build your personal profile'
+        sub="To build your personal profile"
       />
-      <div className='flex flex-col gap-[32px]'>
+      <div className="flex flex-col gap-[32px]">
         <UserInput
           defaultValue={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          error=''
-          label='First Name'
-          type='text'
-          placeholder='Enter your first name'
+          error=""
+          label="First Name"
+          type="text"
+          placeholder="Enter your first name"
         />
         <UserInput
           defaultValue={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          error=''
-          label='Last Name'
-          type='text'
-          placeholder='Enter your last name'
+          error=""
+          label="Last Name"
+          type="text"
+          placeholder="Enter your last name"
         />
-        <div className='flex flex-col gap-[8px]'>
-          <label className='text-m' htmlFor='grid-state'>
+        <div className="flex flex-col gap-[8px]">
+          <label className="text-m" htmlFor="grid-state">
             Gender
           </label>
-          <div className='relative'>
+          <div className="relative">
             <select
               defaultValue={gender}
-              className='px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px] block appearance-none w-full focus:outline-none focus:bg-white focus:border-gray-500'
+              className="px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px] block appearance-none w-full focus:outline-none focus:bg-white focus:border-gray-500"
               onChange={(e) => setGender(e.target.value)}
-              id='grid-state'
+              id="grid-state"
             >
-              <option value='' className='text-third-foreground'>
+              <option value="" className="text-third-foreground">
                 Please Select
               </option>
-              <option value='female'>Female</option>
-              <option value='male'>Male</option>
-              <option value='notanswer'>Perfer not to answer</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="notanswer">Perfer not to answer</option>
             </select>
-            <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
-                className='fill-current h-4 w-4'
-                xmlns='http://www.w3.org/2000/svg'
-                viewBox='0 0 20 20'
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
               >
-                <path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z' />
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
               </svg>
             </div>
           </div>
           <ErrorMsg error={""} />
         </div>
-        <div className='flex flex-col gap-[8px]'>
-          <label className='text-m' htmlFor='grid-state'>
+        <div className="flex flex-col gap-[8px]">
+          <label className="text-m" htmlFor="grid-state">
             Date Of Birth
           </label>
           <input
             defaultValue={birth}
             onChange={(e) => setBirth(e.target.value)}
-            type='date'
-            className='px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px]'
+            type="date"
+            className="px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px]"
           />
         </div>
-        <div className='flex justify-between items-center'>
+        <div className="flex justify-between items-center">
           <button
-            type='button'
-            className='flex items-center gap-[8px] px-[16px] py-[8px]'
+            type="button"
+            className="flex items-center gap-[8px] px-[16px] py-[8px]"
             onClick={() => router.push("/profile/invitation-code")}
           >
             <ArrowLeft size={16} />
-            <div className='text-third-foreground'>Back</div>
+            <div className="text-third-foreground">Back</div>
           </button>
           <SubmitButton
-            type='button'
-            className='w-[240px]'
+            type="button"
+            className="w-[240px]"
             onClick={handleSubmit}
             disabled={!firstName || !lastName || !gender || !birth || isLoading}
             isLoading={isLoading}

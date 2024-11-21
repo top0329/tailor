@@ -26,7 +26,6 @@ const authOptions = {
   ],
   callbacks: {
     async signIn({ user }: any) {
-      console.log("email => ", user);
       const { email } = user;
 
       const auth = await prisma.user.findFirst({

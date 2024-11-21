@@ -9,7 +9,7 @@ const UserFormWrapper = ({
 }) => {
   return (
     <form
-      className='flex flex-col gap-[32px] rounded-[16px]'
+      className="flex flex-col gap-[32px] rounded-[16px]"
       onSubmit={onSubmit}
     >
       {children}

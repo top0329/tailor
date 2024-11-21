@@ -47,16 +47,16 @@ const PwdForm = () => {
   return (
     <UserFormWrapper onSubmit={handleSubmit(onSubmit)}>
       <AuthHeading
-        header='Welcome to Reroute'
-        sub='Please secure your account'
+        header="Welcome to Reroute"
+        sub="Please secure your account"
       />
-      <div className='flex flex-col gap-[32px]'>
-        <div className='flex flex-col gap-[8px]'>
-          <label className='text-m'>Password</label>
+      <div className="flex flex-col gap-[32px]">
+        <div className="flex flex-col gap-[8px]">
+          <label className="text-m">Password</label>
           <input
             {...fields.pwd}
-            type='password'
-            placeholder='Password'
+            type="password"
+            placeholder="Password"
             className={cn(
               "px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px]",
               errors.pwd && "outline-negative-stroke"
@@ -64,12 +64,12 @@ const PwdForm = () => {
           />
           <ErrorMsg error={errors.pwd?.message as string} />
         </div>
-        <div className='flex flex-col gap-[8px]'>
-          <p className='text-m'>Re-type password</p>
+        <div className="flex flex-col gap-[8px]">
+          <p className="text-m">Re-type password</p>
           <input
             {...fields.pwdConfirm}
-            type='password'
-            placeholder='Password'
+            type="password"
+            placeholder="Password"
             className={cn(
               "px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px]",
               errors.pwdConfirm && "outline-negative-stroke"
@@ -77,9 +77,9 @@ const PwdForm = () => {
           />
           <ErrorMsg error={errors.pwdConfirm?.message as string} />
         </div>
-        <div className='text-right'>
+        <div className="text-right">
           <SubmitButton
-            className='w-[240px]'
+            className="w-[240px]"
             isLoading={formState.isSubmitting}
             disabled={formState.isSubmitting}
           />

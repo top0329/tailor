@@ -3,10 +3,15 @@
 import { useEffect, useState } from "react";
 
 import Teacher from "./teacher";
+import EnglishLevelTestButton from "../buttons/english-level-test-button";
 import { useFetch } from "@/app/_helpers/client/useFetch";
 import { useLoadingService } from "@/app/_services/useLoadingService";
 import { useArticleService } from "@/app/_services";
-import EnglishLevelTestButton from "../buttons/english-level-test-button";
+
+type AnswerType = {
+  question: any;
+  answer: string;
+};
 
 const formatQuestionText = (questionData: any) => {
   return (
@@ -21,35 +26,50 @@ const formatQuestionText = (questionData: any) => {
 const EnglishLevelTest = () => {
   const fetch = useFetch();
   const { setIsLoading } = useLoadingService();
-  const { setArticle } = useArticleService();
+  const { article, setArticle } = useArticleService();
 
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [questionData, setQuestionData] = useState<any[]>([]);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
-  const [answeredQuestions, setAnsweredQuestions] = useState<
-    Array<{
-      question: any;
-      answer: string;
-    }>
-  >([]);
+  const [currentArticleSection, setCurrentArticleSection] =
+    useState<string>("A");
+  const [answeredQuestions, setAnsweredQuestions] = useState<AnswerType[]>([]);
 
   useEffect(() => {
     async function getArticle() {
       try {
         setIsLoading(true);
-        const articleData = await fetch.get("/api/article/");
-        console.log(articleData.article);
+        console.log(article);
+        let _articleData;
+        switch (currentArticleSection) {
+          case "A":
+            console.log("A");
+            _articleData = await fetch.get("/api/article/?section=A");
+            break;
+          case "B":
+            console.log("B");
+            _articleData = await fetch.get("/api/article/?section=B");
+            break;
+          case "C":
+            console.log("C");
+            _articleData = await fetch.get("/api/article/?section=C");
+            break;
+          default:
+            console.log("NONE");
+            _articleData = await fetch.get("/api/article/?section=A");
+            break;
+        }
+        console.log(_articleData);
         const questionData = await fetch.get(
-          `/api/article/question/${articleData.article.id}`
+          `/api/article/question/${_articleData.id}`
         );
-        console.log(questionData);
         setArticle({
-          id: articleData.article.id,
-          article: articleData.article.article,
-          level: articleData.article.level,
+          id: _articleData.id,
+          content: _articleData.content,
+          section: _articleData.section,
         });
-        setQuestionData(questionData);
+        setQuestionData((prev) => [...prev, ...questionData]);
       } catch (err) {
         console.log(err);
       } finally {
@@ -58,13 +78,12 @@ const EnglishLevelTest = () => {
     }
 
     getArticle();
-  }, []);
+  }, [currentArticleSection]);
 
   const handleAnswerSelect = (option: string) => {
     setSelectedAnswer(option);
 
     setTimeout(() => {
-      // Store current question and answer
       setAnsweredQuestions((prev) => [
         ...prev,
         {
@@ -78,8 +97,25 @@ const EnglishLevelTest = () => {
     }, 1000);
   };
 
+  const handleSumitAndNextArticle = (currentSection: string) => {
+    console.log(currentSection);
+    console.log(currentQuestionNumber);
+    console.log(answeredQuestions);
+    switch (currentArticleSection) {
+      case "A":
+        setCurrentArticleSection("B");
+        break;
+      case "B":
+        setCurrentArticleSection("C");
+        break;
+      case "C":
+        console.log("here should be calculating score");
+        break;
+    }
+  };
+
   return (
-    <div className="basis-1/3 flex flex-col m-[24px] rounded-2xl bg-[#ebe7f5] h-[86vh] overflow-y-auto scrollbar">
+    <div className="basis-1/3 flex flex-col m-[24px] rounded-2xl bg-[#ebe7f5] h-[84vh] overflow-y-auto scrollbar">
       <div className="flex-1 flex flex-col gap-[8px] rounded-[16px] border border-first-stroke">
         <div className="bg-extra p-[12px] rounded-t-[16px]">
           <p className="text-invert-foreground font-bold">English Level Test</p>
@@ -146,6 +182,37 @@ const EnglishLevelTest = () => {
                       </div>
                     </div>
                   </>
+                )}
+                {currentQuestionNumber === 36 ? (
+                  <div>
+                    <Teacher text="You have completed all the questions. Please click the button below to get your score." />
+                    <div className="flex justify-start mt-2">
+                      <EnglishLevelTestButton
+                        text="Get Score"
+                        className="w-[178px]"
+                        isClicked={false}
+                        onClick={() =>
+                          handleSumitAndNextArticle(article?.section ?? "")
+                        }
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  currentQuestionNumber === questionData.length && (
+                    <div>
+                      <Teacher text="Well done! Let go to the next article." />
+                      <div className="flex justify-start mt-2">
+                        <EnglishLevelTestButton
+                          text="Submit and next article"
+                          className="w-[178px]"
+                          isClicked={false}
+                          onClick={() =>
+                            handleSumitAndNextArticle(article?.section ?? "")
+                          }
+                        />
+                      </div>
+                    </div>
+                  )
                 )}
               </>
             )}

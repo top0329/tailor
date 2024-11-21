@@ -13,6 +13,7 @@ export const usersRepo = {
   verifyOTP,
   createPwd,
   createProfile,
+  isProfileFilled,
 };
 
 async function create({ email }: { email: string }) {
@@ -20,7 +21,7 @@ async function create({ email }: { email: string }) {
     where: { email },
   });
 
-  if (user && user.emailVerified) throw `Email "${email}" is already taken`;
+  if (user && user.emailVerified) return;
 
   const otp = generateOTP();
   const html = `<p>Hello,</p><p>Please verify your email address using the code below:</p><br /><strong>${otp}</strong><br /><p>This code will expire in 20 minutes for security reasons. If you did not attempt to log in to TailorGrow, please reset your password and contact our support team.</p><br /><p>If you have any questions, feel free to reach out to our support team.</p><br /><p>Thank you,</p><p>The TailorGrow Team</p>`;
@@ -85,8 +86,8 @@ async function createPwd({ pwd }: { pwd: string }) {
   }
 }
 async function createProfile({ profile }: { profile: Profile }) {
-  console.log("profile => ", profile);
-  const { invitationCode, personalInfo, interests } = profile;
+  const { personalInfo, interests } = profile;
+  const invitationCode = profile?.invitationCode;
   const { firstName, lastName, gender, birth } = personalInfo!;
 
   const mappedInterests = interests?.map((interest) => {
@@ -118,4 +119,11 @@ async function createProfile({ profile }: { profile: Profile }) {
   } catch (error) {
     throw error;
   }
+}
+
+async function isProfileFilled(id: string) {
+  const profile = await prisma.userProfile.findFirst({
+    where: { userId: id },
+  });
+  return !!profile;
 }

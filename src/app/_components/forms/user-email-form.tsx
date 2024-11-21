@@ -34,19 +34,19 @@ function UserEmailForm() {
   }
 
   return (
-    <div className='max-w-[424px] w-full flex flex-col gap-[16px]'>
+    <div className="max-w-[424px] w-full flex flex-col gap-[16px]">
       <GoogleButton isLoading={formState.isSubmitting} />
-      <p className='text-center'>or</p>
+      <p className="text-center">or</p>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='flex flex-col gap-[32px]'
+        className="flex flex-col gap-[32px]"
       >
-        <div className='flex flex-col gap-[8px]'>
-          <p className='text-m'>Sign up with Email</p>
+        <div className="flex flex-col gap-[8px]">
+          <p className="text-m">Sign up with Email</p>
           <input
             {...fields.email}
-            type='text'
-            placeholder='Email Address'
+            type="text"
+            placeholder="Email Address"
             className={cn(
               "px-[16px] py-[12px] border-first-stroke border-[1px] border-solid rounded-[8px]",
               errors.email && "outline-negative-stroke"
@@ -56,19 +56,19 @@ function UserEmailForm() {
             <ErrorMsg error={errors.email.message?.toString() || ""} />
           )}
         </div>
-        <div className='flex flex-col gap-[12px]'>
+        <div className="flex flex-col gap-[12px]">
           <SubmitButton
             disabled={formState.isSubmitting}
             isLoading={formState.isSubmitting}
           />
-          <p className='text-s text-center'>
+          <p className="text-s text-center">
             By continuing, you are agreeing to Reroute&apos;s
             <br />
-            <Link href='#' className='underline text-highlight-foreground'>
+            <Link href="#" className="underline text-highlight-foreground">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href='#' className='underline text-highlight-foreground'>
+            <Link href="#" className="underline text-highlight-foreground">
               Privacy Policy
             </Link>
           </p>

@@ -29,20 +29,20 @@ const InvitationCodeForm = () => {
     <UserFormWrapper>
       <AuthHeading
         header="Let's get started"
-        sub='Do you have existing plan invitation Code?'
+        sub="Do you have existing plan invitation Code?"
       />
-      <div className='flex flex-col gap-[32px]'>
+      <div className="flex flex-col gap-[32px]">
         <UserInput
           onChange={(e) => handleChange(e)}
           defaultValue={profile?.invitationCode}
-          error=''
-          label='Invitation Code'
-          type='text'
-          placeholder='Enter invitation code'
+          error=""
+          label="Invitation Code"
+          type="text"
+          placeholder="Enter invitation code"
         />
-        <div className='flex justify-end items-center gap-[16px]'>
+        <div className="flex justify-end items-center gap-[16px]">
           <button
-            type='button'
+            type="button"
             onClick={() => {
               setIsLoading(true);
               setProfile({ invitationCode: "" });
@@ -52,8 +52,8 @@ const InvitationCodeForm = () => {
             <p>Skip, I don&apos;t have it</p>
           </button>
           <SubmitButton
-            type='button'
-            className='w-[240px]'
+            type="button"
+            className="w-[240px]"
             onClick={handleSubmit}
             disabled={isLoading}
             isLoading={isLoading}

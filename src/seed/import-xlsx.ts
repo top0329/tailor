@@ -1,4 +1,4 @@
-import { Level, PrismaClient } from "@prisma/client";
+import { Section, PrismaClient } from "@prisma/client";
 import ExcelJS from "exceljs";
 
 const prisma = new PrismaClient();
@@ -8,57 +8,53 @@ function validateAndTrim(value: any, maxLength: number): string {
   return stringValue.slice(0, maxLength);
 }
 
-export async function importExcel(filePath: string, sheetName: string) {
+export async function importExcel(filePath: string) {
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.readFile(filePath);
-  const worksheet = workbook.getWorksheet(sheetName);
 
-  if (!worksheet) {
-    throw new Error(`Worksheet "${sheetName}" not found in the workbook.`);
-  }
+  for (const worksheet of workbook.worksheets) {
+    if (!worksheet.name.toLowerCase().startsWith("article")) {
+      continue;
+    }
 
-  // Process rows sequentially
-  for (let rowNumber = 2; rowNumber <= worksheet.rowCount; rowNumber++) {
-    const row = worksheet.getRow(rowNumber);
-    const article = row.getCell(2).value?.toString() || "";
-    const level = sheetName.split(" ")[1] as Level;
-    if (article === "") break;
+    console.log(`Processing sheet: ${worksheet.name}`);
 
-    // Check if article exists
-    let articleData = await prisma.articleData.findFirst({
-      where: {
-        level: level,
-        article: article,
-      },
-    });
+    for (let rowNumber = 2; rowNumber <= worksheet.rowCount; rowNumber++) {
+      const row = worksheet.getRow(rowNumber);
+      const article = row.getCell(2).value?.toString() || "";
+      const section = worksheet.name.split(" ")[1] as Section;
+      if (article === "") continue;
 
-    // If article doesn't exist, create new TestData
-    if (!articleData) {
-      articleData = await prisma.articleData.create({
+      let articleData = await prisma.article.findFirst({
+        where: {
+          section: section,
+          content: article,
+        },
+      });
+
+      if (!articleData) {
+        articleData = await prisma.article.create({
+          data: {
+            section: section,
+            content: article,
+          },
+        });
+      }
+
+      await prisma.questionData.create({
         data: {
-          level: level,
-          article: article,
+          articleId: articleData.id,
+          competency: validateAndTrim(row.getCell(3).value, 50),
+          no: Number(row.getCell(4).value),
+          question: validateAndTrim(row.getCell(5).value, 500),
+          a: validateAndTrim(row.getCell(6).value, 500),
+          b: validateAndTrim(row.getCell(7).value, 500),
+          c: validateAndTrim(row.getCell(8).value, 500),
+          d: validateAndTrim(row.getCell(9).value, 500),
+          best_answer: validateAndTrim(row.getCell(10).value, 500),
+          explanation: row.getCell(11).value?.toString() || "",
         },
       });
     }
-
-    // Create question for existing or new TestData
-    await prisma.questionData.create({
-      data: {
-        articleDataId: articleData.id,
-        competency: validateAndTrim(row.getCell(3).value, 50),
-        no: Number(row.getCell(4).value),
-        question: validateAndTrim(row.getCell(5).value, 500),
-        a: validateAndTrim(row.getCell(6).value, 500),
-        b: validateAndTrim(row.getCell(7).value, 500),
-        c: validateAndTrim(row.getCell(8).value, 500),
-        d: validateAndTrim(row.getCell(9).value, 500),
-        best_answer: validateAndTrim(row.getCell(10).value, 500),
-        explanation: row.getCell(11).value?.toString() || "",
-        amy: validateAndTrim(row.getCell(12).value, 500),
-        ip: validateAndTrim(row.getCell(13).value, 500),
-        status: row.getCell(14).value === "TRUE" ? true : false,
-      },
-    });
   }
 }

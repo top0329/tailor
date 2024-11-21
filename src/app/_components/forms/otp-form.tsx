@@ -24,8 +24,6 @@ const OTPInput = ({ length = 6 }: InputProps) => {
   const [OTP, setOTP] = useState<string[]>(Array(length).fill(""));
   const inputRef = useRef<HTMLInputElement[]>(Array(length).fill(null));
 
-  console.log("email => ", email);
-
   const handleTextChange = (input: string, index: number) => {
     if (!/^\d*$/.test(input)) {
       return;
@@ -47,37 +45,36 @@ const OTPInput = ({ length = 6 }: InputProps) => {
 
   async function onSubmit() {
     const otp = OTP.join("");
-    const res = await userService.verifyOTP(otp, email);
-    console.log("res => ", res);
+    await userService.verifyOTP(otp, email);
   }
 
   return (
     <UserFormWrapper onSubmit={handleSubmit(onSubmit)}>
-      <AuthHeading header='Welcome to Reroute' sub='Please verify your email' />
-      <div className='flex flex-col gap-[8px]'>
-        <p className='text-m'>Verification code</p>
-        <div className='flex justify-between gap-[8px]'>
+      <AuthHeading header="Welcome to Reroute" sub="Please verify your email" />
+      <div className="flex flex-col gap-[8px]">
+        <p className="text-m">Verification code</p>
+        <div className="flex justify-between gap-[8px]">
           {Array.from({ length }, (_, index) => (
             <input
               key={index}
-              type='text'
+              type="text"
               maxLength={1}
               value={OTP[index]}
               onChange={(e) => handleTextChange(e.target.value, index)}
               ref={(ref) => {
                 if (ref) inputRef.current[index] = ref;
               }}
-              className='h-[48px] w-full text-center border-[1px] border-first-stroke rounded-[8px]'
+              className="h-[48px] w-full text-center border-[1px] border-first-stroke rounded-[8px]"
             />
           ))}
         </div>
       </div>
-      <div className='text-right'>
+      <div className="text-right">
         <SubmitButton
-          type='submit'
+          type="submit"
           disabled={OTP.join("").length !== 6 || formState.isSubmitting}
           isLoading={formState.isSubmitting}
-          className='w-[240px]'
+          className="w-[240px]"
         />
       </div>
     </UserFormWrapper>
