@@ -1,34 +1,42 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Section } from "@prisma/client";
 
-import { apiHandler } from "@/app/_helpers/server/api";
 import { prisma } from "@/app/_helpers/server/prisma";
 
-module.exports = apiHandler({
-  GET: getArticle,
-});
+export const dynamic = "force-dynamic";
 
-async function getArticle(req: NextRequest) {
+export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const section = searchParams.get("section") as Section | undefined;
-  if (!section) {
-    return {
-      status: 400,
-      body: {
-        message: "Missing section",
-      },
-    };
-  }
-  const randomArticle = await prisma.article.findMany({
-    take: 1,
-    where: {
-      section: section,
-    },
-    orderBy: {
-      id: "asc",
-    },
-    skip: Math.floor(Math.random() * 3),
-  });
 
-  return randomArticle[0];
+  if (!section) {
+    return NextResponse.json({ message: "Missing section" }, { status: 400 });
+  }
+
+  try {
+    const randomArticle = await prisma.article.findMany({
+      take: 1,
+      where: {
+        section: section,
+      },
+      orderBy: {
+        id: "asc",
+      },
+      skip: Math.floor(Math.random() * 3),
+    });
+
+    if (randomArticle.length === 0) {
+      return NextResponse.json(
+        { message: "No article found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(randomArticle[0]);
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
 }
